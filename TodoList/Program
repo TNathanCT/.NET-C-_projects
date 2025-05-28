@@ -17,8 +17,8 @@ class Program{
         Console.WriteLine("Welcome to Todo CLI! You have " + todoItems.Count + " tasks to do");
 
         while(true){
-            Console.Write("\nEnter command (add, list, remove, exit, done)");
-            var input = Console.ReadLine()?.Trim();
+            Console.Write("\nEnter command (add, list, remove, search, exit, done)");
+            var input = Console.ReadLine()?.Trim().ToLower();
 
             switch(input){
                 case "add":
@@ -37,8 +37,13 @@ class Program{
                     MarkItemDone();
                     break;
 
+                case "search":
+                    SearchItems();
+                    break;
+
                 case "exit":
                     return;
+
                 default:
                     Console.WriteLine("Unknown Command, try again");
                     break;
@@ -113,5 +118,36 @@ class Program{
             Console.WriteLine("Please enter a valid number");
         }
     }
+
+    static void SearchItems()
+    {
+        Console.Write("Enter search keyword: ");
+        var keyword = Console.ReadLine()?.Trim().ToLower();
+
+        if (string.IsNullOrWhiteSpace(keyword)){
+            Console.WriteLine("No keyword entered.");
+            return;
+        }
+        /*
+        var results = todoList
+                .Select((item, index) => new { Index = index + 1, Item = item })
+                .Where(x => x.Item.Description.ToLower().Contains("milk"))
+                .ToList();
+        */
+
+        bool found = false;
+        for (int i = 0; i < todoItems.Count; i++)
+        {
+            var item = todoItems[i];
+            if (item.Description.ToLower().Contains(keyword)){
+                Console.WriteLine($"{i + 1}. [{(item.Done ? "X" : " ")}] {item.Description}");
+                found = true;
+            }
+        }
+
+        if (!found){
+            Console.WriteLine("No matching tasks found.");
+        }
+    }   
 
 }
