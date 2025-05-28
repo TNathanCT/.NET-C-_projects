@@ -10,12 +10,14 @@ class TodoItem{
 
 class Program{
     static List<TodoItem> todoItems = new();
+    const string filePath = "todos.json";
 
     static void Main(string[] args){
+        LoadFromFile();
         Console.WriteLine("Welcome to Todo CLI! You have " + todoItems.Count + " tasks to do");
 
         while(true){
-            Console.Write("\nEnter command (add, list, remove, exit)");
+            Console.Write("\nEnter command (add, list, remove, exit, done)");
             var input = Console.ReadLine()?.Trim();
 
             switch(input){
@@ -31,9 +33,12 @@ class Program{
                     RemoveItem();
                     break;
 
+                case "done":
+                    MarkItemDone();
+                    break;
+
                 case "exit":
                     return;
-
                 default:
                     Console.WriteLine("Unknown Command, try again");
                     break;
@@ -46,6 +51,7 @@ class Program{
         var desc = Console.ReadLine()?.Trim();
         if(!string.IsNullOrEmpty(desc)){
             todoItems.Add(new TodoItem{Description = desc, Done = false});
+            SaveToFile();
             Console.WriteLine("Task Added");
         }
     }
@@ -61,12 +67,12 @@ class Program{
             Console.WriteLine($"{i + 1}. [{(item.Done ? "X" : " ")}] {item.Description}");
         }
     }
-
     static void RemoveItem(){
         Console.Write("Enter task number to remove: ");
         if(int.TryParse(Console.ReadLine(), out int index)){
             if(index >= 1 && index <= todoItems.Count){
                 todoItems.RemoveAt(index - 1);
+                SaveToFile();
                 Console.WriteLine("Task removed.");
             }
         }
@@ -74,4 +80,38 @@ class Program{
             Console.WriteLine("Invalid task number");
         }
     }
+    static void LoadFromFile(){
+        if(File.Exists(filePath)){
+            string json = File.ReadAllText(filePath);
+            var loadedList = JsonSerializer.Deserialize<List<TodoItem>>(json);
+
+            if(loadedList != null){
+                todoItems = loadedList;
+            } 
+        }
+    }
+    static void SaveToFile(){
+        string json = JsonSerializer.Serialize(todoItems, new JsonSerializerOptions {WriteIndented = true});
+        File.WriteAllText(filePath, json);
+    }
+    static void MarkItemDone(){
+        ListItems();
+
+        Console.Write("Enter task number to mark as done: ");
+
+        if(int.TryParse(Console.ReadLine(), out int index)){
+            if(index >= 1 && index <= todoItems.Count){
+                todoItems[index-1].Done = true;
+                SaveToFile();
+                Console.WriteLine("Task marked as done.");
+            }
+            else{
+                Console.WriteLine("Invalid task number");
+            }
+        }
+        else{
+            Console.WriteLine("Please enter a valid number");
+        }
+    }
+
 }
