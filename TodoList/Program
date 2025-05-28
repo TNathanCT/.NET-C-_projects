@@ -1,153 +1,73 @@
 using System;
-using System.IO;
-using System.Text.Json;
-using System.Collections.Generic;
 
-class TodoItem{
-    public string? Description { get; set; }
-    public bool Done { get; set; }
-}
+class Program
+{
+    static void Main(string[] args)
+    {
+        var todoList = new TodoList();
 
-class Program{
-    static List<TodoItem> todoItems = new();
-    const string filePath = "todos.json";
+        while (true)
+        {
+            Console.Write("\nEnter command (add, list, remove, done, search, exit): ");
+            var command = Console.ReadLine()?.Trim().ToLower();
 
-    static void Main(string[] args){
-        LoadFromFile();
-        Console.WriteLine("Welcome to Todo CLI! You have " + todoItems.Count + " tasks to do");
-
-        while(true){
-            Console.Write("\nEnter command (add, list, remove, search, exit, done)");
-            var input = Console.ReadLine()?.Trim().ToLower();
-
-            switch(input){
+            switch (command)
+            {
                 case "add":
-                    AddItem();
+                    Console.Write("Enter task: ");
+                    var task = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(task)){
+                        Console.WriteLine("Task cannot be empty.");
+                    }
+                    else{
+                        todoList.Add(task);
+                    }
                     break;
-                
+
                 case "list":
-                    ListItems();
+                    todoList.List();
                     break;
 
                 case "remove":
-                    RemoveItem();
+                    Console.Write("Enter task number to remove: ");
+                    var removeInput = Console.ReadLine();
+                    if (int.TryParse(removeInput, out var removeIndex)){
+                        todoList.Remove(removeIndex);
+                    }
+                    else{
+                        Console.WriteLine("Invalid number.");
+                    }
                     break;
 
                 case "done":
-                    MarkItemDone();
+                    Console.Write("Enter task number to mark done: ");
+                    var doneInput = Console.ReadLine();
+                    if (int.TryParse(doneInput, out var doneIndex)){
+                        todoList.MarkDone(doneIndex);
+                    }
+                    else{
+                        Console.WriteLine("Invalid number.");
+                    }
                     break;
 
                 case "search":
-                    SearchItems();
+                    Console.Write("Enter keyword: ");
+                    var keyword = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(keyword)){
+                        Console.WriteLine("Please enter a valid keyword.");
+                    }
+                    else{
+                        todoList.Search(keyword);
+                    }
                     break;
 
                 case "exit":
                     return;
 
                 default:
-                    Console.WriteLine("Unknown Command, try again");
+                    Console.WriteLine("Unknown command.");
                     break;
             }
         }
     }
-
-    static void AddItem(){
-        Console.Write("Enter task description: ");
-        var desc = Console.ReadLine()?.Trim();
-        if(!string.IsNullOrEmpty(desc)){
-            todoItems.Add(new TodoItem{Description = desc, Done = false});
-            SaveToFile();
-            Console.WriteLine("Task Added");
-        }
-    }
-
-    static void ListItems(){
-        if(todoItems.Count == 0){
-            Console.WriteLine("No tasks found");
-            return;
-        }
-        Console.WriteLine("\nTodo List: ");
-        for(int i = 0; i < todoItems.Count; i++){
-            var item = todoItems[i];
-            Console.WriteLine($"{i + 1}. [{(item.Done ? "X" : " ")}] {item.Description}");
-        }
-    }
-    static void RemoveItem(){
-        Console.Write("Enter task number to remove: ");
-        if(int.TryParse(Console.ReadLine(), out int index)){
-            if(index >= 1 && index <= todoItems.Count){
-                todoItems.RemoveAt(index - 1);
-                SaveToFile();
-                Console.WriteLine("Task removed.");
-            }
-        }
-        else{
-            Console.WriteLine("Invalid task number");
-        }
-    }
-    static void LoadFromFile(){
-        if(File.Exists(filePath)){
-            string json = File.ReadAllText(filePath);
-            var loadedList = JsonSerializer.Deserialize<List<TodoItem>>(json);
-
-            if(loadedList != null){
-                todoItems = loadedList;
-            } 
-        }
-    }
-    static void SaveToFile(){
-        string json = JsonSerializer.Serialize(todoItems, new JsonSerializerOptions {WriteIndented = true});
-        File.WriteAllText(filePath, json);
-    }
-    static void MarkItemDone(){
-        ListItems();
-
-        Console.Write("Enter task number to mark as done: ");
-
-        if(int.TryParse(Console.ReadLine(), out int index)){
-            if(index >= 1 && index <= todoItems.Count){
-                todoItems[index-1].Done = true;
-                SaveToFile();
-                Console.WriteLine("Task marked as done.");
-            }
-            else{
-                Console.WriteLine("Invalid task number");
-            }
-        }
-        else{
-            Console.WriteLine("Please enter a valid number");
-        }
-    }
-
-    static void SearchItems()
-    {
-        Console.Write("Enter search keyword: ");
-        var keyword = Console.ReadLine()?.Trim().ToLower();
-
-        if (string.IsNullOrWhiteSpace(keyword)){
-            Console.WriteLine("No keyword entered.");
-            return;
-        }
-        /*
-        var results = todoList
-                .Select((item, index) => new { Index = index + 1, Item = item })
-                .Where(x => x.Item.Description.ToLower().Contains("milk"))
-                .ToList();
-        */
-
-        bool found = false;
-        for (int i = 0; i < todoItems.Count; i++)
-        {
-            var item = todoItems[i];
-            if (item.Description.ToLower().Contains(keyword)){
-                Console.WriteLine($"{i + 1}. [{(item.Done ? "X" : " ")}] {item.Description}");
-                found = true;
-            }
-        }
-
-        if (!found){
-            Console.WriteLine("No matching tasks found.");
-        }
-    }   
-
 }
