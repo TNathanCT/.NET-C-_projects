@@ -1,0 +1,48 @@
+using Xunit;
+using TodoAppCLI;
+
+public class TodoListTests
+{
+    [Fact]
+    public void Add_AddsNewTask_TaskAppearsInList()
+    {
+        // Arrange
+        var todoList = new TodoList();
+
+        // Act
+        todoList.Add("Buy milk");
+
+        // Assert
+        var output = todoList.GetItems(); // You need to add this method to TodoList
+        Assert.Single(output);
+        Assert.Equal("Buy milk", output[0].Description);
+    }
+
+    [Fact]//this means - Hey, this method is a unit test. Please run it when I call dotnet test
+
+
+//This means that the function will be run twice for the test - each for the following option
+/*  
+[Theory]
+[InlineData(2, 3, 5)]
+[InlineData(10, 5, 15)]
+public void AddsNumbers(int a, int b, int expected)
+{
+    Assert.Equal(expected, a + b);
+}
+*/
+   
+    public void Remove_RemovesCorrectTask_TaskIsGone(){
+        var todoList = new TodoList();
+        todoList.Add("Buy Milk");
+        todoList.Add("Walk Dog");
+
+        todoList.Remove(1);
+
+        var output = todoList.GetItems();
+        Assert.Single(output);
+        Assert.Equal("Walk Dog", output[0].Description);
+        //The Assert class here tells us that "Walk Dog" is expected, and the output[0].Description is what is actually showing.
+        //If they are not the same, return an error. 
+    }
+}
