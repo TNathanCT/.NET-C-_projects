@@ -7,7 +7,7 @@ public class TodoListTests
     public void Add_AddsNewTask_TaskAppearsInList()
     {
         // Arrange
-        var todoList = new TodoList();
+        var todoList = new TodoList("test-add.json", reset: true);
 
         // Act
         todoList.Add("Buy milk");
@@ -31,9 +31,8 @@ public void AddsNumbers(int a, int b, int expected)
     Assert.Equal(expected, a + b);
 }
 */
-   
-    public void Remove_RemovesCorrectTask_TaskIsGone(){
-        var todoList = new TodoList();
+public void Remove_RemovesCorrectTask_TaskIsGone(){
+        var todoList = new TodoList("test-remove.json", reset: true);
         todoList.Add("Buy Milk");
         todoList.Add("Walk Dog");
 
