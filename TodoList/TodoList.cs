@@ -1,16 +1,36 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
+namespace TodoAppCLI{
 public class TodoList
 {
-    private const string FilePath = "todo.json";
+    private string FilePath;
     private List<TodoItem> items;
 
-    public TodoList()
+    public TodoList(string filePath = "todo.json", bool reset = false)
     {
-        items = LoadFromFile();
+        this.FilePath = filePath;
+
+        if(reset == true){
+            File.WriteAllText(filePath,"[]");
+            items = new List<TodoItem>();
+        }
+        else{
+            items = LoadFromFile();
+        }
+
+
+        if(!reset && File.Exists(filePath)){
+            string json = File.ReadAllText(filePath);
+
+            //if below fails, it defaults to an empty list.
+            items = JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new List<TodoItem>();
+        }
+        if(reset){
+            File.WriteAllText(filePath, "[]");
+        }
     }
 
     public void Add(string description)
@@ -62,8 +82,9 @@ public class TodoList
     {
         var found = false;
         for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i].Description.ToLower().Contains(keyword.ToLower()))
+        {   
+            //If the description is null, then treat it like an empty string
+           if ((items[i].Description ?? "").ToLower().Contains(keyword.ToLower()))
             {
                 Console.WriteLine($"{i + 1}. [{(items[i].Done ? "X" : " ")}] {items[i].Description}");
                 found = true;
@@ -93,4 +114,5 @@ public class TodoList
         return items;
     }
 
+}
 }
