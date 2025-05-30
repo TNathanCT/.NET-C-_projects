@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var todoList = new TodoList();
+        var todoList = new TodoAppCLI.TodoList();
 
         while (true)
         {
