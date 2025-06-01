@@ -1,7 +1,7 @@
 using Xunit;
 using TodoAppCLI;
 
-public class TodoListTests
+public class UnitTest1
 {
     [Fact]
     public void Add_AddsNewTask_TaskAppearsInList()
@@ -44,4 +44,26 @@ public void Remove_RemovesCorrectTask_TaskIsGone(){
         //The Assert class here tells us that "Walk Dog" is expected, and the output[0].Description is what is actually showing.
         //If they are not the same, return an error. 
     }
+
+
+
+[Fact]
+public void Add_TaskWithTags_TagsAreSavedCorrectly()
+{
+    // Arrange
+    var todoList = new TodoList("test-tags.json", reset: true);
+    var tags = new List<string> { "work", "urgent" };
+
+    // Act
+    todoList.Add("Finish report", taggys: tags);
+
+    // Assert
+    var items = todoList.GetItems();
+    Assert.Single(items);
+    Assert.Equal("Finish report", items[0].Description);
+    Assert.Equal(2, items[0].tags.Count);
+    Assert.Contains("work", items[0].tags);
+    Assert.Contains("urgent", items[0].tags);
+}
+
 }
