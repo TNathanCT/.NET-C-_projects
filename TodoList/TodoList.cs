@@ -33,12 +33,24 @@ public class TodoList
         }
     }
 
-    public void Add(string description)
-    {
-        items.Add(new TodoItem { Description = description });
+    public void Add(string description, DateTime? dueDate = null, Priority prio = Priority.Medium, List<string>? taggys = null){
+        items.Add(new TodoItem { Description = description, dueDates = dueDate, priority = prio, tags = taggys ?? new List<string>() });
         SaveToFile();
     }
 
+    public void SetDueDate(int index, DateTime dueDate){
+        if(index < 1 || index > items.Count){
+            Console.WriteLine("Invalid number");
+            return;
+        }
+
+        items[index - 1].dueDates = dueDate;
+        SaveToFile();
+        Console.WriteLine($"Due date for task {index} set to {dueDate:yyyy-MM-dd}");
+    }
+
+
+    
     public void List()
     {
         if (items.Count == 0)
@@ -47,12 +59,30 @@ public class TodoList
             return;
         }
 
-        for (int i = 0; i < items.Count; i++)
-        {
+        for (int i = 0; i < items.Count; i++){
             string status = items[i].Done ? "[X]" : "[ ]";
-            Console.WriteLine($"{i + 1}. {status} {items[i].Description}");
+            string? due = items[i].dueDates.HasValue ? $" (Due: {items[i].dueDates.Value:yyyy-MM-dd})":"";
+            string priority =  $" [{items[i].priority}]";
+            string tagStr = items[i].tags.Count > 0 ? $" [Tags: {string.Join(", ", items[i].tags)}]" : "";
+            Console.WriteLine($"{i + 1}. {status} {items[i].Description}{due}{tagStr}");
         }
     }
+
+    public void SearchByTag(string tag){
+        var found = false;
+        for(int i = 0; i < items.Count; i++){
+            //ignoring case of the input
+            if(items[i].tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase))){
+                Console.WriteLine($"{i + 1}. [{(items[i].Done ? "X" : " ")}] {items[i].Description}");
+                found = true;
+            }
+        }
+
+        if(!found){
+            Console.WriteLine("No matching tags found.");
+        }
+    }
+
 
     public void Remove(int index)
     {
