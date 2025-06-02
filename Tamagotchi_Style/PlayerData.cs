@@ -485,6 +485,7 @@ public class Tamagotchi_PlayerData : MonoBehaviour
         GlobalUIController.HideLoadingLayer();
     }
 
+
     public void AddCoins(){
         ownedCoins += 10;
         SDKAPIManager.TamagotchicoinsIAP data = new SDKAPIManager.TamagotchicoinsIAP(ownedCoins);               
