@@ -21,7 +21,7 @@
     }
 
     [Serializable] public struct TamagotchiTokenTransactionResponse{
-        public int dayo_token_balance;
+        public int pet_token_balance;
     }
     
     [Serializable] public struct TamagotchiGetRewardList_CollectedRewards{ //SO COLLECTED_REWARDS CAN BE PARSED SEPARATELY FROM MAIN TAMAGOTCHIGETREWARDLIST STRUCT IF NEEDED
@@ -30,7 +30,6 @@
     [Serializable] public struct TamagotchiGetRewardList{
         [Serializable] public struct rewardItem{
             public int _id;
-            public int amount;
             public string type;
             public string name;
             public bool claimed;
@@ -45,7 +44,7 @@
         public string user_id;
         public string email;
         public string profile;
-        public int dayo_token_balance;
+        public int pet_token_balance;
         public TamagotchiDetails tamagotchi;
         public TamagotchiGetRewardList rewards;
         
@@ -57,7 +56,7 @@
     }
 
     [Serializable]
-    public struct TamagotchiDisplaySkinIAP{
+    public struct TamagotchiSkinIAP{
         
         [Serializable]
         public struct ItemStruct{
@@ -67,7 +66,7 @@
         }
         
         public ItemStruct item;
-        public TamagotchiDisplaySkinIAP(string itemname, string typestring, string position){
+        public TamagotchiSkinIAP(string itemname, string typestring, string position){
             item.name = itemname;
             item.type = typestring;
             item.place = position;
@@ -139,9 +138,9 @@
     }
 
     [Serializable] public struct TamagotchiTokenIAP{
-        public int dayo_tokens;
+        public int pet_tokens;
         public TamagotchiTokenIAP(int token){
-            dayo_tokens = token;
+            pet_tokens = token;
         }
     }
 
@@ -161,7 +160,7 @@
 
 
 
-// ===================== VIRTUAL PET DAYO =====================================
+// ===================== VIRTUAL PET pet =====================================
     
     public void RetrieveTamagotchiData(string user,GameObject rObj,string rFunction,string profile){
         string requestString = origin.apiRoot + "/game_profile/" + user + "/"+ profile +"?"+ v6_apichanges_version2string;
@@ -201,15 +200,15 @@
         StartCoroutine(SendAPIRequest<TamagotchiDetails>(rObj,rFunction,RequestType.POST,requestString,JsonStr));        
     }
 
-    public void SendDayoTokens(GameObject rObj, string rFunction, string user, TamagotchiTokenIAP purchaseData){        
+    public void SendpetTokens(GameObject rObj, string rFunction, string user, TamagotchiTokenIAP purchaseData){        
         string JsonStr = JsonUtility.ToJson(purchaseData);
-        string requestString = origin.apiRoot + "/game_profile/dayo_tokens/"+UserAccount.instance.user_id +"/"+UserAccount.instance.activeProfile;         
+        string requestString = origin.apiRoot + "/game_profile/pet_tokens/"+UserAccount.instance.user_id +"/"+UserAccount.instance.activeProfile;         
         StartCoroutine(SendAPIRequest<TamagotchiTokenTransactionResponse>(rObj,rFunction,RequestType.POST,requestString,JsonStr));  
         
     }
 
 
-    public void SendNewTamagotchiDisplayData(GameObject rObj, string rFunction, string user, TamagotchiDisplaySkinIAP purchaseData){        
+    public void SendNewTamagotchiDisplayData(GameObject rObj, string rFunction, string user, TamagotchiSkinIAP purchaseData){        
         string JsonStr = JsonUtility.ToJson(purchaseData);
         string requestString = origin.apiRoot + "/game_profile/tamagotchi/items/activate_skin/"+UserAccount.instance.user_id +"/"+UserAccount.instance.activeProfile;// + requestURL;
         StartCoroutine(SendAPIRequest<TamagotchiDetails>(rObj,rFunction,RequestType.POST,requestString,JsonStr));
