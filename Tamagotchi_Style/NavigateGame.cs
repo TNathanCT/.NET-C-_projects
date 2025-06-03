@@ -12,7 +12,7 @@ using UnityEngine.PlayerLoop;
 public class Tamagotchi_NavigateGameScript : MonoBehaviour
 {
     public GameObject LivingRoom, KitchenRoom, Bathroom, DailyRewardsPopup;
-    public GameObject EditButtonsLivingRoom, EditButtonsBathroom, EditButtonsKitchen, EditDayoWardrobe, editscenebutton, exitButton;
+    public GameObject EditButtonsLivingRoom, EditButtonsBathroom, EditButtonsKitchen, EditpetWardrobe, editscenebutton, exitButton;
     public Button openRewardsButton;   
     public GameObject displayButtons;
     public List<GameObject> editSceneSectionButtons = new List<GameObject>(); //EDIT ROOM BUTTONS AT TOP OF SCREEN
@@ -62,9 +62,9 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
     }
 
     public void GotoEdit(){
-        //Tamagotchi_DayoHungerScript.hungerinstance.HoursPassedSinceLastSession();
-        //Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_AccessoriesScript>().SetDirtDisplay(100);
-        Tamagotchi_EvolutionScript.evoinstance.babyDayopositions[0].SetActive(false); 
+        //Tamagotchi_petHungerScript.hungerinstance.HoursPassedSinceLastSession();
+        //Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_AccessoriesScript>().SetDirtDisplay(100);
+        Tamagotchi_EvolutionScript.evoinstance.babypetpositions[0].SetActive(false); 
         Tamagotchi_AudioManager.audioinstace.StartStoreMusic();
         Tamagotchi_MarketSliderManager.instance.backButton.SetActive(true);
         exitButton.SetActive(false);
@@ -182,8 +182,8 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
 
     public void LeaveEdit(){
         Tamagotchi_AudioManager.audioinstace.StartLivingRoomMusic();
-        if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase != 0 && Tamagotchi_PlayerData.instance.Dayo!=null){
-            Tamagotchi_PlayerData.instance.Dayo.SetActive(true);
+        if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase != 0 && Tamagotchi_PlayerData.instance.pet!=null){
+            Tamagotchi_PlayerData.instance.pet.SetActive(true);
         }        
         if(Tamagotchi_MarketSliderManager.instance.sliderOpen){
             Tamagotchi_MarketSliderManager.instance.ChangeSection(Tamagotchi_NavigateGameScript.navscript.editpage); //REFRESH SECTION BEFORE CLOSING EDIT MODE 
@@ -215,10 +215,10 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
         editpage = targetPage;
         //HIDE DISPLAY MODE ELEMENTS
         if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 0){
-            Tamagotchi_PlayerData.instance.Dayo = GameObject.Find("DayoEgg");
+            Tamagotchi_PlayerData.instance.pet = GameObject.Find("petEgg");
         }
-        if(Tamagotchi_PlayerData.instance.Dayo != null){
-            Tamagotchi_PlayerData.instance.Dayo.SetActive(false);
+        if(Tamagotchi_PlayerData.instance.pet != null){
+            Tamagotchi_PlayerData.instance.pet.SetActive(false);
         }        
         Tamagotchi_MarketSliderManager.instance.topIcons.GetComponent<Image>().enabled = true;
         editscenebutton.SetActive(false);
@@ -276,18 +276,18 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
 
     public void GoToEditKitchen(){
         ShowEditPage(2);
-        //HIDE DAYO AND FOOD BUTTON WHEN GOING INTO KITCHEN EDIT MODE
-        Tamagotchi_KitchenRoomScript.kitcheninstance.dayoArea.SetActive(false);
+        //HIDE pet AND FOOD BUTTON WHEN GOING INTO KITCHEN EDIT MODE
+        Tamagotchi_KitchenRoomScript.kitcheninstance.petArea.SetActive(false);
         Tamagotchi_KitchenRoomScript.kitcheninstance.foodTableArea.SetActive(false); 
     }
 
      public void GoToDisplayBathroom(){
         ShowDisplayMode(1);
         bathroomMirror.GetComponent<Button>().enabled = true;
-        Tamagotchi_EvolutionScript.evoinstance.babyDayopositions[0].SetActive(false);  
+        Tamagotchi_EvolutionScript.evoinstance.babypetpositions[0].SetActive(false);  
         bathroomPlayHeader.text = translationDataFile.Gettranslation("_StartScreen_PlayHeader");
-        if(Tamagotchi_PlayerData.instance.Dayo != null){
-            MoveDayo(Bathroom.transform.Find("Room"));
+        if(Tamagotchi_PlayerData.instance.pet != null){
+            Movepet(Bathroom.transform.Find("Room"));
         }
      
         if(PlayerPrefs.GetString("LastScene") != "Tamagotchi_BathGame"){
@@ -300,8 +300,8 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
 
     public void GoToDisplayLivingRoom(){
         ShowDisplayMode(0);
-        if(Tamagotchi_PlayerData.instance.Dayo != null){
-            MoveDayo(LivingRoom.transform.Find("Room"));
+        if(Tamagotchi_PlayerData.instance.pet != null){
+            Movepet(LivingRoom.transform.Find("Room"));
         }
         DailyRewardsPopup.SetActive(false);
         openRewardsButton.gameObject.SetActive(true);
@@ -315,8 +315,8 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
 
         if (Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase > 0){ //IF NOT EGG
             Tamagotchi_PlayerData.instance.SettingUpMarketClothes(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase-1); //SET CLOTHES 
-            Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_AccessoriesScript>().SetDirtDisplay(); //SET DIRT VISIBILITY
-            Tamagotchi_EvolutionScript.evoinstance.babyDayopositions[0].SetActive(false);  
+            Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_AccessoriesScript>().SetDirtDisplay(); //SET DIRT VISIBILITY
+            Tamagotchi_EvolutionScript.evoinstance.babypetpositions[0].SetActive(false);  
         }
     }
     public void OpenDailyRewards(){
@@ -325,26 +325,26 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
 
     public void GoToDisplayKitchen(){
         ShowDisplayMode(2);
-        Tamagotchi_EvolutionScript.evoinstance.babyDayopositions[1].SetActive(false); //?? WHATS THIS FOR?...
-        // if(currentDayo != null && Tamagotchi_EvolutionScript.evoinstance.evolutionstage > 1){
+        Tamagotchi_EvolutionScript.evoinstance.babypetpositions[1].SetActive(false); //?? WHATS THIS FOR?...
+        // if(currentpet != null && Tamagotchi_EvolutionScript.evoinstance.evolutionstage > 1){
         //     for(int i = 0; i < Tamagotchi_KitchenRoomScript.kitcheninstance.accessorylist.Count; i++){ 
-        //         Tamagotchi_KitchenRoomScript.kitcheninstance.accessorylist[i] = currentDayo.transform.Find("Head/Eyes/Accessory").GetChild(i).gameObject;
+        //         Tamagotchi_KitchenRoomScript.kitcheninstance.accessorylist[i] = currentpet.transform.Find("Head/Eyes/Accessory").GetChild(i).gameObject;
         //     }
         // }
         Tamagotchi_KitchenRoomScript.kitcheninstance.SetUpKitchen();//Tamagotchi_PlayerData.instance.itemChosentoDisplay);
     }
 
-    public void MoveDayo(Transform room){ //MOVE THE MAIN DAYO INSTANCE BETWEEN ROOMS LIKE LIVING ROOM / BATHROOM AS NEEDED 
-        Tamagotchi_PlayerData.instance.Dayo.SetActive(true); 
-        Tamagotchi_PlayerData.instance.Dayo.transform.SetParent(room); //SET MAIN DAYO INSTANCE'S PARENT TRANSFORM TO TARGET ROOM TRANSFORM PROVIDED AS PARAMETER
-        //START THE ANIMATIONS FOR THE TARGET DAYO INSTANCE WHETHER THE CURRENT EVOLTUION STAGE IS BABY OR ADULT/FANTASY
-        if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 1 &&Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_BabyDayoAnimation1>() != null ){
-            Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_BabyDayoAnimation1>().StartMainSceneAnimations();
+    public void Movepet(Transform room){ //MOVE THE MAIN pet INSTANCE BETWEEN ROOMS LIKE LIVING ROOM / BATHROOM AS NEEDED 
+        Tamagotchi_PlayerData.instance.pet.SetActive(true); 
+        Tamagotchi_PlayerData.instance.pet.transform.SetParent(room); //SET MAIN pet INSTANCE'S PARENT TRANSFORM TO TARGET ROOM TRANSFORM PROVIDED AS PARAMETER
+        //START THE ANIMATIONS FOR THE TARGET pet INSTANCE WHETHER THE CURRENT EVOLTUION STAGE IS BABY OR ADULT/FANTASY
+        if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 1 &&Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_BabypetAnimation1>() != null ){
+            Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_BabypetAnimation1>().StartMainSceneAnimations();
         }else if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 2 || Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 3){
-            Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_AdultDayoAnimations>().StartMainSceneAnimations();
+            Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_AdultpetAnimations>().StartMainSceneAnimations();
         }
-        for(int i = 0; i < Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_HeartEffects>().hearts.Length; i++){
-            Tamagotchi_PlayerData.instance.Dayo.GetComponent<Tamagotchi_HeartEffects>().hearts[i].gameObject.transform.parent = Tamagotchi_PlayerData.instance.Dayo.transform;
+        for(int i = 0; i < Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_HeartEffects>().hearts.Length; i++){
+            Tamagotchi_PlayerData.instance.pet.GetComponent<Tamagotchi_HeartEffects>().hearts[i].gameObject.transform.parent = Tamagotchi_PlayerData.instance.pet.transform;
         }
     }
 
@@ -445,8 +445,8 @@ public class Tamagotchi_NavigateGameScript : MonoBehaviour
     public void DisableAllInstances(){
         Tamagotchi_AudioManager.audioinstace = null;
         Tamagotchi_BathroomScript.bathroominstance = null;
-    //    Tamagotchi_DayoEatingAnimation.dayoanim = null;
-        Tamagotchi_DayoHungerScript.hungerinstance = null;
+    //    Tamagotchi_petEatingAnimation.petanim = null;
+        Tamagotchi_petHungerScript.hungerinstance = null;
         Tamagotchi_EvolutionScript.evoinstance = null;
         Tamagotchi_HeartEffects.effectinstance = null;
         Tamagotchi_KitchenRoomScript.kitcheninstance = null;
