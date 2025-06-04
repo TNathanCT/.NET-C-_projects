@@ -16,11 +16,21 @@ class Program
                 case "add":
                     Console.Write("Enter task: ");
                     var task = Console.ReadLine();
+                    Console.Write("Enter due date (yyyy-mm-dd) or leave empty: ");
+                    string? dateInput = Console.ReadLine();
+                    DateTime? dueDate = null;
+
+
+                    if(DateTime.TryParse(dateInput, out DateTime parsedDate)){
+                        dueDate = parsedDate;
+                    }
+
                     if (string.IsNullOrWhiteSpace(task)){
                         Console.WriteLine("Task cannot be empty.");
                     }
                     else{
-                        todoList.Add(task);
+                        todoList.Add(task, dueDate);
+                        Console.WriteLine("Task Added");
                     }
                     break;
 
