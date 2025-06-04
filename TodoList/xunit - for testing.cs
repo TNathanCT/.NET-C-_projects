@@ -15,7 +15,7 @@ public class UnitTest1
         // Assert
         var output = todoList.GetItems(); // You need to add this method to TodoList
         Assert.Single(output);
-        Assert.Equal("Buy milk", output[0].Description);
+        Assert.Equal("Buy milk", output[0].description);
     }
 
     [Fact]//this means - Hey, this method is a unit test. Please run it when I call dotnet test
@@ -40,8 +40,8 @@ public void Remove_RemovesCorrectTask_TaskIsGone(){
 
         var output = todoList.GetItems();
         Assert.Single(output);
-        Assert.Equal("Walk Dog", output[0].Description);
-        //The Assert class here tells us that "Walk Dog" is expected, and the output[0].Description is what is actually showing.
+        Assert.Equal("Walk Dog", output[0].description);
+        //The Assert class here tells us that "Walk Dog" is expected, and the output[0].description is what is actually showing.
         //If they are not the same, return an error. 
     }
 
@@ -60,7 +60,7 @@ public void Add_TaskWithTags_TagsAreSavedCorrectly()
     // Assert
     var items = todoList.GetItems();
     Assert.Single(items);
-    Assert.Equal("Finish report", items[0].Description);
+    Assert.Equal("Finish report", items[0].description);
     Assert.Equal(2, items[0].tags.Count);
     Assert.Contains("work", items[0].tags);
     Assert.Contains("urgent", items[0].tags);
