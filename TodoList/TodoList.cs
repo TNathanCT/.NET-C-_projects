@@ -33,8 +33,11 @@ public class TodoList
         }
     }
 
-    public void Add(string description, DateTime? dueDate = null, Priority prio = Priority.Medium, List<string>? taggys = null){
-        items.Add(new TodoItem { Description = description, dueDates = dueDate, priority = prio, tags = taggys ?? new List<string>() });
+    public void Add(string descriptions, DateTime? dueDate = null, Priority prio = Priority.Medium, List<string>? taggys = null){
+        items.Add(new TodoItem (descriptions, dueDate){
+                priority = prio,
+                tags = taggys ?? new List<string>()
+        });
         SaveToFile();
     }
 
@@ -60,11 +63,11 @@ public class TodoList
         }
 
         for (int i = 0; i < items.Count; i++){
-            string status = items[i].Done ? "[X]" : "[ ]";
+            string status = items[i].done ? "[X]" : "[ ]";
             string? due = items[i].dueDates.HasValue ? $" (Due: {items[i].dueDates.Value:yyyy-MM-dd})":"";
             string priority =  $" [{items[i].priority}]";
             string tagStr = items[i].tags.Count > 0 ? $" [Tags: {string.Join(", ", items[i].tags)}]" : "";
-            Console.WriteLine($"{i + 1}. {status} {items[i].Description}{due}{tagStr}");
+            Console.WriteLine($"{i + 1}. {status} {items[i].description}{due}{tagStr}");
         }
     }
 
@@ -73,7 +76,7 @@ public class TodoList
         for(int i = 0; i < items.Count; i++){
             //ignoring case of the input
             if(items[i].tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase))){
-                Console.WriteLine($"{i + 1}. [{(items[i].Done ? "X" : " ")}] {items[i].Description}");
+                Console.WriteLine($"{i + 1}. [{(items[i].done ? "X" : " ")}] {items[i].description}");
                 found = true;
             }
         }
@@ -104,7 +107,7 @@ public class TodoList
             return;
         }
 
-        items[index - 1].Done = true;
+        items[index - 1].done = true;
         SaveToFile();
     }
 
@@ -114,9 +117,9 @@ public class TodoList
         for (int i = 0; i < items.Count; i++)
         {   
             //If the description is null, then treat it like an empty string
-           if ((items[i].Description ?? "").ToLower().Contains(keyword.ToLower()))
+           if ((items[i].description ?? "").ToLower().Contains(keyword.ToLower()))
             {
-                Console.WriteLine($"{i + 1}. [{(items[i].Done ? "X" : " ")}] {items[i].Description}");
+                Console.WriteLine($"{i + 1}. [{(items[i].done ? "X" : " ")}] {items[i].description}");
                 found = true;
             }
         }
