@@ -20,7 +20,7 @@ public class TodoListTests : IDisposable
 
         var output = todoList.GetItems();
         Assert.Single(output);
-        Assert.Equal("Buy milk", output[0].Description);
+        Assert.Equal("Buy milk", output[0].description);
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class TodoListTests : IDisposable
 
         var output = todoList.GetItems();
         Assert.Single(output);
-        Assert.Equal("Walk Dog", output[0].Description);
+        Assert.Equal("Walk Dog", output[0].description);
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class TodoListTests : IDisposable
 
         var output = todoList.GetItems();
         Assert.Single(output);
-        Assert.Equal("Finish report", output[0].Description);
+        Assert.Equal("Finish report", output[0].description);
         Assert.Equal(2, output[0].tags.Count);
         Assert.Contains("work", output[0].tags);
         Assert.Contains("urgent", output[0].tags);
