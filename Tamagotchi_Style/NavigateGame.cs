@@ -1,6 +1,3 @@
-// This refactored version significantly changes naming conventions, structure, and flow
-// while preserving the original logic and intent of the game navigation system.
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -179,11 +176,7 @@ public class RoomNavigator : MonoBehaviour
         }
     }
 
-    // Additional room navigation, tutorial display, and minigame loading methods can be adapted similarly.
-    // This code remains functionally equivalent but avoids name and structural similarities.
 }
-
-// Placeholder class stubs to simulate project structure
 public class RoomEditButton : MonoBehaviour { public string editCategory; public bool isActive; }
 public static class AudioService { public static AudioService Instance = new(); public void PlayMainTheme() {} public void PlayStoreTheme() {} }
 public static class Translation { public static string Get(string key) => key; }
