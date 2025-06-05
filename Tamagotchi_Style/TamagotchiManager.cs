@@ -27,7 +27,6 @@ public class TamagotchiManager : MonoBehaviour
     public List<AsyncOperationHandle<IList<GameObject>>> libraryGameObjectLoaders = new();
     public TMP_Text coinText_TMP;
     public bool requireInitialItemActivation = false;
-    public int ownedCoins;
     public int amountrunning;
     public SDKAPIManager.TamagotchiProfileData localCachedData;
 
