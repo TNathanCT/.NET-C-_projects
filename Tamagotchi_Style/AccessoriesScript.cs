@@ -25,12 +25,8 @@ public class AccessoriesScript : MonoBehaviour
     public List<BodyArea> itemBodyAreas = new List<BodyArea>(); 
     public List<SubBodyPartArea> subBodyPartAreas = new List<SubBodyPartArea>();
     public List<Image> dirtStains;
-    //public List <GameObject> accessories = new List<GameObject>();
-   //public List<GameObject> princeOutfit = new List<GameObject>();
     public List<Sprite> pajamaOutfit = new List<Sprite>();
-    //public List<Sprite> normalSkin = new List <Sprite>();
     public Color currentDirtImageColour;
-//    public GameObject leftfoot, rightfood, belly, tail, lowarm, wavinghand;
     bool initialised = false;
     void Awake(){
         Initialise();
@@ -136,15 +132,7 @@ public class AccessoriesScript : MonoBehaviour
         if (amount == -1f){ //IF NO VALUE PROVIDED, DEFAULT TO HYGINEAMOUNT FROM HUNGER SCRIPT
             amount = Tamagotchi_petHungerScript.hungerinstance.hygieneamout;
         }
-        //float dirtthickness = PlayerPrefs.GetFloat("DirtStatus");
-        //if(dirtthickness <= 0 || dirtthickness == null){
-        //    dirtthickness = 0;
-        //}
-        
-       // imagealpha = Mathf.Round(dirtthickness * 10.0f) * 0.1f;
-        //Debug.Log(imagealpha + " HELP ME THREE");
-       // currentImageColor.a = 1 - imagealpha;
-       
+      
        float imagealpha = 0;
         if(amount <= 45f){
             imagealpha = 100 - (float)amount;
@@ -165,91 +153,10 @@ public class AccessoriesScript : MonoBehaviour
 
     public void ChangeClothesOnpet(){
         //SET THE CLOTHES SELECTION ON THIS pet TO THE CURRENTLY ACTIVE CLOTHES SELECTED BY THE USER
-    //  isBaby = (Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 1); //IS pet IN BABY STAGE
         DisplayAccessory();
         DisplayHat();
         DisplayVeste();
     }
 
-    // public void DisplayPrince(){
-    //     if(Tamagotchi_PlayerData.instance.itemChosentoDisplay.Find(x=>x.name == "outfit") != null){
-    //         //Tamagotchi_PlayerData.instance.itemChosentoDisplay.Add(Tamagotchi_PlayerData.instance.thingsBought.Find(x=>x.name == "outfit"));
-    //         if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 2 && Tamagotchi_PlayerData.instance.pet.activeInHierarchy == true){
-    //             princeOutfit[0].SetActive(true);
-    //             princeOutfit[1].SetActive(true);
-    //         }
-    //         else if (Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 3 && Tamagotchi_PlayerData.instance.pet.activeInHierarchy == true){
-    //             Tamagotchi_PlayerData.instance.pet.transform.GetChild(0).gameObject.SetActive(true);
-    //             Tamagotchi_PlayerData.instance.pet.transform.Find("Vestes/CapeFront").gameObject.SetActive(true);
-    //         }
-           
-            
-    //     }
-    //     else{
 
-    //         if (Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 2){
-    //             princeOutfit[0].SetActive(false);
-    //             princeOutfit[1].SetActive(false);
-    //         }
-    //         if (Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 3){
-    //            Tamagotchi_PlayerData.instance.pet.transform.GetChild(0).gameObject.SetActive(false);
-    //            Tamagotchi_PlayerData.instance.pet.transform.Find("Vestes/CapeFront").gameObject.SetActive(false);
-    //         }
-
-
-              
-    //     }
-    // }
-
-        // if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 2 || Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 3){
-        //     DisplayPrince();
-        //     DisplayAdultPajama(leftfoot, rightfood, tail, belly, lowarm, wavinghand);
-        // }
-
-        // if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 1){
-        //     DisplayBabyPajama(leftfoot, rightfood, tail, belly, lowarm, wavinghand);
-        // }
-    //}
-
-    // public void DisplayAdultPajama(GameObject leftFoot, GameObject rightFoot, GameObject tail, GameObject belly, GameObject lowArm, GameObject wavingArm){
-    //         if(Tamagotchi_PlayerData.instance.itemChosentoDisplay.Find(x=>x.name == "Easter Pajama") != null){
-    //             leftFoot.GetComponent<Image>().sprite = pajamaOutfit[0];//foot
-    //             rightFoot.GetComponent<Image>().sprite = pajamaOutfit[0];//foot
-    //             belly.GetComponent<Image>().sprite = pajamaOutfit[2];//belly
-    //             lowArm.GetComponent<Image>().sprite = pajamaOutfit[3];
-    //             wavingArm.GetComponent<Image>().sprite = pajamaOutfit[4];
-
-    //             if(Tamagotchi_PlayerData.localCachedData.tamagotchi.evolution_phase == 2){
-    //                 tail.GetComponent<Image>().sprite = pajamaOutfit[1];//tail
-    //             }
-    //         }
-    //         else if(Tamagotchi_PlayerData.instance.itemChosentoDisplay.Find(x=>x.name == "Easter Pajama") == null){
-    //             leftFoot.GetComponent<Image>().sprite = normalSkin[0];//foot
-    //             rightFoot.GetComponent<Image>().sprite = normalSkin[0];//foot
-    //             tail.GetComponent<Image>().sprite = normalSkin[1];//tail
-    //             belly.GetComponent<Image>().sprite = normalSkin[2];//belly
-    //             lowArm.GetComponent<Image>().sprite = normalSkin[3];
-    //             wavingArm.GetComponent<Image>().sprite = normalSkin[4];
-    //         }
-        
-    // }
-
-    // public void DisplayBabyPajama(GameObject leftFoot, GameObject rightFoot, GameObject tail, GameObject belly, GameObject lowArm, GameObject wavingArm){
-    //         if(Tamagotchi_PlayerData.instance.itemChosentoDisplay.Find(x=>x.name == "Baby Easter Pajama") != null){
-    //             leftFoot.GetComponent<Image>().sprite = pajamaOutfit[0];//foot
-    //             rightFoot.GetComponent<Image>().sprite = pajamaOutfit[0];//foot
-    //             tail.GetComponent<Image>().sprite = pajamaOutfit[1];//tail
-    //             belly.GetComponent<Image>().sprite = pajamaOutfit[2];//belly
-    //             lowArm.GetComponent<Image>().sprite = pajamaOutfit[3];
-    //             wavingArm.GetComponent<Image>().sprite = pajamaOutfit[4];
-    //         }
-    //         else if(Tamagotchi_PlayerData.instance.itemChosentoDisplay.Find(x=>x.name == "Baby Easter Pajama") == null){
-    //             leftFoot.GetComponent<Image>().sprite = normalSkin[0];//foot
-    //             rightFoot.GetComponent<Image>().sprite = normalSkin[0];//foot
-    //             tail.GetComponent<Image>().sprite = normalSkin[1];//tail
-    //             belly.GetComponent<Image>().sprite = normalSkin[2];//belly
-    //             lowArm.GetComponent<Image>().sprite = normalSkin[3];
-    //             wavingArm.GetComponent<Image>().sprite = normalSkin[4];
-    //         }
-    // }
 }
