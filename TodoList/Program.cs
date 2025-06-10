@@ -5,7 +5,6 @@ class Program
     static void Main(string[] args)
     {
         var todoList = new TodoAppCLI.TodoList();
-
         while (true)
         {
             Console.Write("\nEnter command (add, list, remove, done, search, exit): ");
