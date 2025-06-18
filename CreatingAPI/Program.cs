@@ -73,7 +73,7 @@ public class Program{
             return;//bypass the rest of the function
         }
 
-        Console.WriteLine("What should task number " + taskList.Count + " be ?");
+        Console.WriteLine("What should task number " + (taskList.Count+1) + " be ?");
         var input = Console.ReadLine();
         input = string.IsNullOrWhiteSpace(input) ? defaultValue : input.Trim();
 
@@ -95,6 +95,7 @@ public class Program{
         }
 
         taskList[number].TaskName = Console.ReadLine();   
+        Console.WriteLine($"Task {number + 1} renamed to: {taskList[number].TaskName}");
 
     }
 
