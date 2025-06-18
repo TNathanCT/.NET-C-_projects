@@ -12,52 +12,56 @@ public class Program{
     public static void Main(string[] args){
         
         var program = new Program();
-        //this will need to slightly changed if we want to add future options.
-        Console.WriteLine("Do you wish to add new tasks or check the as complete? Please  type 'add', 'list', 'rename' or 'tick'.");
-        var input = Console.ReadLine()?.Trim().ToLower();
 
-        //prevent a null or wrong input
         while(true){
-            if(input == null || string.IsNullOrEmpty(input)){
-                Console.WriteLine("No input detected. Please Try again");
-                continue;
+            //this will need to slightly changed if we want to add future options.
+            Console.WriteLine("Do you wish to add new tasks or check the as complete? Please  type 'add', 'list', 'rename', 'quit', or 'tick'.");
+            var input = Console.ReadLine()?.Trim().ToLower();
+
+            //prevent a null or wrong input
+            while(true){
+                if(input == null || string.IsNullOrEmpty(input)){
+                    Console.WriteLine("No input detected. Please Try again");
+                    continue;
+                }
+
+                if(program.modificationsPermitted.Contains(input)){
+                    break;
+                }
+                else{
+                    Console.WriteLine("Error: Wrote input. Please try again");
+                }
+
             }
-
-            if(program.modificationsPermitted.Contains(input)){
-                break;
-            }
-            else{
-                Console.WriteLine("Error: Wrote input. Please try again");
-            }
-
-        }
-
-
-
-
-
-
-
 
 
 
         //this will also need to be changed.
-        switch(input){
-            case "add":
-                program.AddTask();
-                break;
-            case "list":
-                program.DisplayList();
-                break;
+            switch(input){
+                case "add":
+                    program.AddTask();
+                    break;
+                case "list":
+                    program.DisplayList();
+                    break;
 
-            case "tick":
-                program.CompleteTask();
-                program.DisplayList();
-                break;
+                case "tick":
+                    program.CompleteTask();
+                    program.DisplayList();
+                    break;
 
-            default:
-                break;
+                case "rename":
+                    program.RenameTask();
+                    break;
 
+                case "quit":
+                    return;
+                    break;
+
+                default:
+                    break;
+
+            }
         }   
     }
 
@@ -79,6 +83,21 @@ public class Program{
         //}   
     }
 
+    public void RenameTask(){
+        Console.WriteLine("Which task to rename? Please provide the number.");
+        var input = Console.ReadLine();
+        int number = 1000;
+
+        while (!int.TryParse(input, out number) || number < 0 || number >= taskList.Count)
+        {
+            Console.Write("This is not valid input. Please enter an integer value: ");
+            input = Console.ReadLine();
+        }
+
+        taskList[number].TaskName = Console.ReadLine();   
+
+    }
+
     public void AddFirstThree(string defaultValue = "[Unnamed Task]"){
         for(int i = 0; i < 3; i++){
             Console.WriteLine("Task Number " + (i+1) + " : What do you need to do");
@@ -94,12 +113,15 @@ public class Program{
     public void CompleteTask(){
         Console.WriteLine("Which task is complete? Please provide the number.");
         var input = Console.ReadLine();
-        while (!double.TryParse(Console.ReadLine(), out number))
+        int number = 1000;
+
+        while (!int.TryParse(input, out number) || number < 0 || number >= taskList.Count)
         {
             Console.Write("This is not valid input. Please enter an integer value: ");
+            input = Console.ReadLine();
         }
 
-        taskList[input].isDone = true;        
+        taskList[number].IsDone = true;        
     }
 
 
@@ -107,7 +129,7 @@ public class Program{
 
     public void DisplayList(){
         for(int i = 0; i <= taskList.Count-1; i++){
-            Console.WriteLine("Task number " + (i+1) + (taskList[i].isDone ? "[X] " : "[ ] ") + taskList[i].Name);
+            Console.WriteLine("Task number " + (i+1) + (taskList[i].IsDone ? "[X] " : "[ ] ") + taskList[i].TaskName);
         }
     }
 }
