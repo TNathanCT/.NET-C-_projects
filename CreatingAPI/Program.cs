@@ -31,11 +31,8 @@ public class Program{
                 else{
                     Console.WriteLine("Error: Wrote input. Please try again");
                 }
-
             }
-
-
-
+        //We will need to establish a loop
         //this will also need to be changed.
             switch(input){
                 case "add":
@@ -76,11 +73,9 @@ public class Program{
         Console.WriteLine("What should task number " + (taskList.Count+1) + " be ?");
         var input = Console.ReadLine();
         input = string.IsNullOrWhiteSpace(input) ? defaultValue : input.Trim();
-
-       //if(input != defaultValue){
+        
             taskList.Add(new TodoItem (input, false));
             Console.WriteLine("Task Number " + taskList.Count + " added : " + input);
-        //}   
     }
 
     public void RenameTask(){
