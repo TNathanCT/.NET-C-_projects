@@ -11,7 +11,6 @@ public class TempConv{
     public void SaveCelcius(float cel){
         TempCelcius = cel;
     }
-
     public void DisplayTemperatures(){
         Console.WriteLine("It is {0} degrees Celcius", TempCelcius);
         Console.WriteLine("It is {0} degrees Fahrenheit", TempFahrenheit);
