@@ -104,8 +104,6 @@ public class Program{
         }     
     }
     
-
-
     public void CompleteTask(){
         Console.WriteLine("Which task is complete? Please provide the number.");
         var input = Console.ReadLine();
@@ -119,16 +117,18 @@ public class Program{
 
         taskList[number].IsDone = true;        
     }
-
-
-
-
+  
     public void DisplayList(){
         for(int i = 0; i <= taskList.Count-1; i++){
             Console.WriteLine("Task number " + (i+1) + (taskList[i].IsDone ? "[X] " : "[ ] ") + taskList[i].TaskName);
         }
     }
 }
+
+
+
+
+
 
 public class TodoItem{
     public string TaskName { get; set;}
