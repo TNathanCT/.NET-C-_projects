@@ -81,7 +81,6 @@ public class AccessoriesScript : MonoBehaviour
                     itemCopy.transform.localScale = Vector3.one;//targetObj.transform.localScale;
                     itemCopy.transform.localEulerAngles = Vector3.zero; //RESET ROTATION IN CASE PARENT OBJECT IS ROTATING DURING INSTANTIATION
                     RectTransform objRect = itemCopy.GetComponent<RectTransform>();
-                    
                     clothingList[targetAreaType].Add(itemCopy);
                     targetObj = null;
                 }
