@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class Program{
     
@@ -8,10 +10,13 @@ public class Program{
 
     //the list of actions we can perform. Modify here to facilitate future additions
     public List<string> modificationsPermitted = new List<string>(){"add" , "tick", "list", "rename"};
-    
+
+
+   
     public static void Main(string[] args){
         
         var program = new Program();
+        LoadFromFile();
 
         while(true){
             //this will need to slightly changed if we want to add future options.
@@ -31,8 +36,11 @@ public class Program{
                 else{
                     Console.WriteLine("Error: Wrote input. Please try again");
                 }
+
             }
-        //We will need to establish a loop
+
+
+
         //this will also need to be changed.
             switch(input){
                 case "add":
@@ -53,7 +61,6 @@ public class Program{
 
                 case "quit":
                     return;
-                    break;
 
                 default:
                     break;
@@ -73,9 +80,13 @@ public class Program{
         Console.WriteLine("What should task number " + (taskList.Count+1) + " be ?");
         var input = Console.ReadLine();
         input = string.IsNullOrWhiteSpace(input) ? defaultValue : input.Trim();
-        
+
+       //if(input != defaultValue){
             taskList.Add(new TodoItem (input, false));
             Console.WriteLine("Task Number " + taskList.Count + " added : " + input);
+        //}   
+
+        SaveToFile();
     }
 
     public void RenameTask(){
@@ -92,6 +103,8 @@ public class Program{
         taskList[number].TaskName = Console.ReadLine();   
         Console.WriteLine($"Task {number + 1} renamed to: {taskList[number].TaskName}");
 
+        SaveToFile();
+
     }
 
     public void AddFirstThree(string defaultValue = "[Unnamed Task]"){
@@ -104,6 +117,8 @@ public class Program{
         }     
     }
     
+
+
     public void CompleteTask(){
         Console.WriteLine("Which task is complete? Please provide the number.");
         var input = Console.ReadLine();
@@ -115,20 +130,30 @@ public class Program{
             input = Console.ReadLine();
         }
 
-        taskList[number].IsDone = true;        
+        taskList[number].IsDone = true;   
+
+        SaveToFile();
     }
-  
+
     public void DisplayList(){
         for(int i = 0; i <= taskList.Count-1; i++){
             Console.WriteLine("Task number " + (i+1) + (taskList[i].IsDone ? "[X] " : "[ ] ") + taskList[i].TaskName);
         }
     }
+
+    public void SaveToFile(){
+        var json = JsonSerializer.Serialize(taskList, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText("todoReal.json", json);
+    }
+    private List<TodoItem> LoadFromFile()
+    {
+        if (!File.Exists("todoReal.json")) return new List<TodoItem>();
+
+        var json = File.ReadAllText("todoReal.json");
+        return JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new List<TodoItem>();
+    }
+
 }
-
-
-
-
-
 
 public class TodoItem{
     public string TaskName { get; set;}
